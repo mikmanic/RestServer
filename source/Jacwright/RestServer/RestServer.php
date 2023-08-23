@@ -56,6 +56,15 @@ class RestServer {
 
 	public $useCors = false;
 	public $allowedOrigin = '*';
+    public $allowedMethods = array('GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS');
+    public $allowedHeaders = array(
+        'X-Requested-With',
+        'content-type',
+        'access-control-allow-origin',
+        'access-control-allow-methods',
+        'access-control-allow-headers',
+        'Authorization'
+    );
 
 	protected $data = null;   // special parameter for post data
 	protected $query = null;  // special parameter for query string
@@ -570,9 +579,9 @@ class RestServer {
 		foreach($allowedOrigin as $allowed_origin) { // to support multiple origins
 			header("Access-Control-Allow-Origin: $allowed_origin");
 		}
-		header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
+		header('Access-Control-Allow-Methods: ' . join(',', $this->allowedMethods));
 		header('Access-Control-Allow-Credential: true');
-		header('Access-Control-Allow-Headers: X-Requested-With, content-type, access-control-allow-origin, access-control-allow-methods, access-control-allow-headers, Authorization');
+		header('Access-Control-Allow-Headers: ' . join(',', $this->allowedHeaders));
 	}
 
 	private $codes = array(
